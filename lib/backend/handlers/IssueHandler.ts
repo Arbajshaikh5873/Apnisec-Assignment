@@ -65,14 +65,14 @@ export class IssueHandler {
       const payload = await authenticateRequest(request);
 
       // Get query parameters
-      const { searchParams } = new URL(request.url);
+      const { searchParams } = await new URL(request.url);
       const type = searchParams.get("type");
       const status = searchParams.get("status");
 
       // Build filters
       const filters: any = {};
       if (type) {
-        filters.type = this.issueValidator.validateIssueType(type);
+        filters.type = await this.issueValidator.validateIssueType(type);
       }
       if (status) {
         filters.status = status;
@@ -84,7 +84,7 @@ export class IssueHandler {
         filters
       );
 
-      return ApiResponse.success(
+      return await ApiResponse.success(
         { issues, count: issues.length },
         "Issues retrieved successfully",
         200,
